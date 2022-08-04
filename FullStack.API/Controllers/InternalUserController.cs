@@ -28,5 +28,43 @@ namespace FullStack.API.Controllers
             await _context.SaveChangesAsync();
             return Ok(internalUserRequest);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateInternalUser(int id, InternalUser updateInternalUser)
+        {
+            var internalUser = await _context.internalUsers.FindAsync(id);
+            if (internalUser == null)
+            {
+                return NotFound();
+            }
+            internalUser.Id = id;
+            internalUser.FirstName = updateInternalUser.FirstName;
+            internalUser.LastName = updateInternalUser.LastName;
+            internalUser.UserName = updateInternalUser.UserName;
+            internalUser.Email = updateInternalUser.Email;
+            internalUser.Designation = updateInternalUser.Designation;
+            internalUser.Grade = updateInternalUser.Grade;
+            internalUser.EmployeeId = updateInternalUser.EmployeeId;
+            internalUser.Gender = updateInternalUser.Gender;
+            internalUser.UserRole_GroupRole = updateInternalUser.UserRole_GroupRole;
+            internalUser.UserGroup = updateInternalUser.UserGroup;
+            internalUser.DateOFBirth = updateInternalUser.DateOFBirth;
+            internalUser.CNIC = updateInternalUser.CNIC;
+            internalUser.Mobile = updateInternalUser.Mobile;
+            await _context.SaveChangesAsync();
+            return Ok(internalUser);
+        }
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteInternalUser(int id)
+        {
+            var internalUser = await _context.internalUsers.FindAsync(id);
+            if (internalUser == null)
+            {
+                return NotFound();
+            }
+            _context.internalUsers.Remove(internalUser);
+            await _context.SaveChangesAsync();
+            return Ok(internalUser);
+        }
     }
 }
