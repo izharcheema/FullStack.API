@@ -28,8 +28,9 @@ namespace FullStack.API.Controllers
             await _context.SaveChangesAsync();
             return Ok(internalUserRequest);
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateInternalUser(int id, InternalUser updateInternalUser)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateInternalUser([FromRoute]int id, InternalUser updateInternalUser)
         {
             var internalUser = await _context.internalUsers.FindAsync(id);
             if (internalUser == null)
@@ -55,7 +56,7 @@ namespace FullStack.API.Controllers
         }
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteInternalUser(int id)
+        public async Task<IActionResult> DeleteInternalUser([FromRoute]int id)
         {
             var internalUser = await _context.internalUsers.FindAsync(id);
             if (internalUser == null)
@@ -65,6 +66,17 @@ namespace FullStack.API.Controllers
             _context.internalUsers.Remove(internalUser);
             await _context.SaveChangesAsync();
             return Ok(internalUser);
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetInternalUser([FromRoute] int id)
+        {
+            var internaluser= await _context.internalUsers.FirstOrDefaultAsync(x=>x.Id==id);
+            if (internaluser == null)
+            {
+                NotFound();
+            }
+            return Ok(internaluser);
         }
     }
 }
